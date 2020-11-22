@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using webapi.Repository;
 
 namespace webapi
 {
@@ -26,6 +28,11 @@ namespace webapi
         {
 
             services.AddControllers();
+
+            services.AddDbContext<MusicContext>(options => options.UseSqlite(this.Configuration.GetConnectionString("BootcampConnection")) );
+
+            services.AddScoped<AlbumRepository>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
